@@ -71,7 +71,7 @@
                             <td>{{ attempt.score }}</td>
                             <td>{{ attempt.percentage|floatformat:1 }}%</td>
                             <td>{{ attempt.duration_formatted }}</td>
-                            <td>{{ attempt.end_time|date:"Y/m/d H:i" }}</td>
+                            <td>{{ attempt.end_time|jalali_date:"%Y/%m/%d ساعت %H:%M"}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

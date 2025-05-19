@@ -28,11 +28,14 @@ class CustomLoginView(View):
 
             request.session['phone'] = phone
             request.session.set_expiry(180)
+            if user.first_name:
+                return redirect('accounts:login_otp')
+            else:
+                return redirect('accounts:register')
 
-            return redirect('accounts:login_otp')
         else:
             request.session['phone'] = phone
-           
+            new_user = User.objects.create(username=phone)
             return redirect('accounts:register')
 
 
@@ -46,7 +49,6 @@ class LoginOTP(View):
     def post(self,request):
 
         phone = request.session.get('phone')
-
         if phone:
             otp = request.POST['otp']
             user = User.objects.get(username=phone)
@@ -54,6 +56,12 @@ class LoginOTP(View):
             latest_user_otp = latest_user_otp.code
 
             if latest_user_otp == otp:
+                
+                if request.session.get('f_name') and request.session.get('l_name'):
+                    user.first_name = request.session.get('f_name')
+                    user.last_name = request.session.get('l_name')
+                    user.save()
+                    
                 OtpCode.objects.filter(username_phone=user).delete()
                 login(request,user=user)
                 return redirect('quiz:dashboard')
@@ -72,13 +80,31 @@ class LoginOTP(View):
     
     
 
-def register(request):
+class RegisterView(View):
 
-    context = {
-        
-        'title': 'ثبت نام'
-    }
-    return render(request, 'accounts/register.html', context)
+    def get(self,request):
+        phone = request.session.get('phone')
+        if phone:
+            return render(request,'accounts/register.html')
+        else:
+            return redirect("accounts:login")
+
+    def post(self,request):
+
+        phone = request.POST['phone']
+        f_name = request.POST['f_name']
+        l_name = request.POST['l_name']
+        new_user = User.objects.get(username=phone)
+        random_otp_code = randint(1000,9999)
+        new_otp = OtpCode(username_phone=new_user,code=random_otp_code)
+        new_otp.save()
+        send_otp(phone=phone,code=random_otp_code)
+
+
+        request.session['f_name'] = f_name
+        request.session['l_name'] = l_name
+
+        return redirect('accounts:login_otp')
 
 @login_required
 def profile(request):
