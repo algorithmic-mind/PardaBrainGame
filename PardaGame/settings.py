@@ -26,9 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'quiz',
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'widget_tweaks',
+    'utils',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
@@ -109,3 +107,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'quiz:dashboard'
 LOGOUT_REDIRECT_URL = 'accounts:login'
+

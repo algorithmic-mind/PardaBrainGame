@@ -1,33 +1,81 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import LoginView
+from django.http import HttpResponse
+from django.views import View
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.contrib import messages
+from django.contrib.messages import error
+from .models import OtpCode
+from utils.sms import send_otp
+from random import randint
 
-from .forms import UserRegisterForm, UserUpdateForm
 
-class CustomLoginView(LoginView):
-    template_name = 'accounts/login.html'
+class CustomLoginView(View):
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'ورود به سیستم'
-        return context
+    def get(self,request):
+        return render(request,'accounts/login.html')
+
+    def post(self,request):
+        phone = request.POST['phone']
+
+        if User.objects.filter(username=phone).exists():
+            user = User.objects.get(username=phone)
+            random_otp_code = randint(1000,9999)
+            new_otp = OtpCode(username_phone=user,code=random_otp_code)
+            new_otp.save()
+            send_otp(phone=phone,code=random_otp_code)
+
+            request.session['phone'] = phone
+            request.session.set_expiry(180)
+
+            return redirect('accounts:login_otp')
+        else:
+            request.session['phone'] = phone
+           
+            return redirect('accounts:register')
+
+
+
+
+class LoginOTP(View):
+
+    def get(self,request):
+        return render(request,'accounts/login_otp.html')
+
+    def post(self,request):
+
+        phone = request.session.get('phone')
+
+        if phone:
+            otp = request.POST['otp']
+            user = User.objects.get(username=phone)
+            latest_user_otp = OtpCode.objects.filter(username_phone=user).last()
+            latest_user_otp = latest_user_otp.code
+
+            if latest_user_otp == otp:
+                OtpCode.objects.filter(username_phone=user).delete()
+                login(request,user=user)
+                return redirect('quiz:dashboard')
+            else:
+                error(request,'کد احراز هویت صحیح نمی باشد')
+                return redirect('accounts:login_otp')
+
+        else:
+            return redirect('accounts:login')
+
+
+
+
+        return HttpResponse(latest_user_otp)
+    
+    
+    
 
 def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'حساب کاربری برای {username} با موفقیت ایجاد شد! اکنون می‌توانید وارد شوید.')
-            return redirect('accounts:login')
-    else:
-        form = UserRegisterForm()
-    
+
     context = {
-        'form': form,
+        
         'title': 'ثبت نام'
     }
     return render(request, 'accounts/register.html', context)

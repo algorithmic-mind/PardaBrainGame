@@ -8,17 +8,21 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header bg-orange text-white">
-                <h5 class="card-title mb-0 fw-bold">ورود به سیستم</h5>
+                <h5 class="card-title mb-0 fw-bold"> کد احراز هویت </h5>
             </div>
             <div class="card-body">
                 <form method="POST">
                     {% csrf_token %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger">{{message}}</div>
+                        
+                    {% endfor %}
                     <div class="mb-2">
-                        <label for="phone" class="form-label">شماره موبایل</label>
+                        <label for="otp" class="form-label">کد چهار رقمی پیامک شده را وارد کنید </label>
                     </div>
 
                     <div class="mb-3">
-                        <input type="tel" class="form-control" name="phone" id="phone" required placeholder="0912...">
+                        <input type="number" class="form-control" name="otp" id="otp" required inputmode="numeric" >
                     </div>
                     
                     <button type="submit" class="btn btn-3d-orange w-100">دریافت کد احراز هویت</button>
