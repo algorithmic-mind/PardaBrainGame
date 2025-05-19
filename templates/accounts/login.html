@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-orange text-white">
+                <h5 class="card-title mb-0 fw-bold">ورود به سیستم</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">شماره موبایل</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="tel" class="form-control" name="phone" id="phone" required placeholder="0912...">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-3d-orange w-100">ورود</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

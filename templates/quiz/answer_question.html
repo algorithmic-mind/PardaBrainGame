@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-orange text-white">
+        <h4 class="card-title mb-0">
+            {% if question.question_text %}
+                {{ question.question_text }}
+            {% else %}
+                {{ question.text }}
+            {% endif %}
+        </h4>
+        <div class="mt-2">
+            <span class="badge bg-light text-dark">سوال {{ current_number }} از {{ total_questions }}</span>
+            <span class="badge bg-light text-dark">{{ question.points }} امتیاز</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- نمایش محتوای سوال بر اساس نوع -->
+        {% if question.question_type == 'image' and question.question_image %}
+            <img src="{{ question.question_image.url }}" class="img-fluid mb-4 rounded-4" alt="تصویر سوال">
+        {% endif %}
+        {% if question.question_type == 'video' and question.question_video %}
+            <video controls class="w-100 mb-4 rounded-4">
+                <source src="{{ question.question_video.url }}" type="video/mp4">
+                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+            </video>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                {% for choice in question.choice_set.all %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 {% if answer.selected_choice == choice %}border-primary{% endif %}">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input bg-orange" type="radio" name="choice" id="choice{{ choice.id }}" value="{{ choice.id }}" {% if answer.selected_choice == choice %}checked{% endif %}>
+                                <label class="form-check-label w-100" for="choice{{ choice.id }}">
+                                    {% if choice.choice_type == 'image' and choice.choice_image %}
+                                        <img src="{{ choice.choice_image.url }}" class="img-fluid mb-2 rounded-4" alt="گزینه {{ forloop.counter }}">
+                                    {% endif %}
+                                    {% if choice.choice_type == 'text' or not choice.choice_type %}
+                                        <p class="mb-0">{{ choice.choice_text }}</p>
+                                    {% endif %}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4 mb-5 d-flex justify-content-between">
+                <button type="submit" class="btn btn-3d-orange">ثبت پاسخ و ادامه</button>
+                <a href="{% url 'quiz:complete_quiz' attempt.id %}" class="btn btn-3d-warning">اتمام آزمون</a>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<br>
+{% endblock %}

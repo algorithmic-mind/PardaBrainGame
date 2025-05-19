@@ -1,0 +1,193 @@
+@font-face {
+    font-family: 'YekanBakhMedium';
+    src: url('../fonts/YekanBakhMedium.ttf') format('woff2'),
+    
+  }
+
+
+@font-face {
+    font-family: 'YekanBakhHeavy';
+    src: url('../fonts/YekanBakhHeavy.ttf') format('woff2'),
+    
+  }
+
+
+  @font-face {
+    font-family: 'YekanBakhFat';
+    src: url('../fonts/YekanBakhFat.ttf') format('woff2'),
+    
+  }
+
+
+body {
+    font-family: 'YekanBakhMedium';
+  }
+
+a{
+  text-decoration: none !important;
+}
+
+.title-page{
+    font-family: 'YekanBakhFat' !important;
+    font-weight: bold;
+}
+
+.bg-orange{
+  background-color: #ff8f20 !important;
+  border: #e6811d;
+}
+.text-orange{
+  color: #ff8f20 !important;
+}
+.btn-3d-orange {
+font-size: 16px;
+display: inline-block;
+padding: 10px 15px;
+margin: 8px;
+background-color: #ff8f20; /* رنگ نارنجی مورد نظر */
+color: white;
+text-decoration: none;
+
+border-radius: 12px; /* گوشه‌های گرد */
+border: none;
+box-shadow: 0 5px 0 #cc731a, /* سایه تیره‌تر برای افکت 3D */
+          0 8px 10px rgba(255, 255, 255, 0.2);
+transition: all 0.1s ease;
+position: relative;
+top: 0;
+}
+
+.btn-3d-warning {
+  font-size: 16;
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 8px;
+  background-color: rgb(255 193 7); /* رنگ نارنجی مورد نظر */
+  color: white;
+  text-decoration: none;
+  
+  border-radius: 12px; /* گوشه‌های گرد */
+  border: none;
+  box-shadow: 0 5px 0 #9b7f06, /* سایه تیره‌تر برای افکت 3D */
+            0 8px 10px rgba(255, 255, 255, 0.2);
+  transition: all 0.1s ease;
+  position: relative;
+  top: 0;
+  }
+
+.btn-3d-warning:hover{
+  background-color: rgb(216, 164, 7);
+  color: white;
+}  
+
+
+.btn-3d-danger {
+  font-size: 16;
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 8px;
+  background-color: #c92230; /* رنگ نارنجی مورد نظر */
+  color: white;
+  text-decoration: none;
+  
+  border-radius: 12px; /* گوشه‌های گرد */
+  border: none;
+  box-shadow: 0 5px 0 #97121d, /* سایه تیره‌تر برای افکت 3D */
+            0 8px 10px rgba(255, 255, 255, 0.2);
+  transition: all 0.1s ease;
+  position: relative;
+  top: 0;
+  }
+  .btn-3d-danger:hover{
+    background-color: #990a16;
+    color: white;
+  }  
+  
+.btn-secondary{
+  
+  font-size: 16px;
+border-radius: 12px; /* گوشه‌های گرد */
+border: none;
+box-shadow: 0 5px 0 #272726 , /* سایه تیره‌تر برای افکت 3D */
+          0 8px 10px rgba(255, 255, 255, 0.2) !important;
+transition: all 0.1s ease;
+position: relative;
+top: 0;
+
+}
+
+.btn-secondary:active{
+  top: 5px; /* حرکت دکمه هنگام کلیک */
+box-shadow: 0 2px 0 #cc731a, /* کاهش سایه برای افکت فشرده شدن */
+          0 4px 5px rgba(48, 48, 48, 0.925);
+}
+
+.btn-warning{
+  background-color: ffc107;
+  border-radius: 12px; /* گوشه‌های گرد */
+  border: none;
+  box-shadow: 0 5px 0 #272726 , /* سایه تیره‌تر برای افکت 3D */
+            0 8px 10px rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.1s ease;
+  position: relative;
+  top: 0;
+  
+  }
+  
+  .btn-warning:active{
+    top: 5px; /* حرکت دکمه هنگام کلیک */
+  box-shadow: 0 2px 0 #cc731a, /* کاهش سایه برای افکت فشرده شدن */
+            0 4px 5px rgba(48, 48, 48, 0.925);
+  }
+
+.btn-3d-orange:hover {
+background-color: #e6811d;
+color: whitesmoke; /* کمی تیره‌تر هنگام هاور */
+}
+
+.btn-3d-orange:active {
+top: 5px; /* حرکت دکمه هنگام کلیک */
+box-shadow: 0 2px 0 #cc731a, /* کاهش سایه برای افکت فشرده شدن */
+          0 4px 5px rgba(236, 231, 231, 0.925);
+}
+
+.animated-image {
+  animation: 
+      zoomIn 0.8s ease-out, /* انیمیشن بزرگ شدن اولیه */
+      float 4s ease-in-out infinite, /* انیمیشن تکان خوردن دائمی */
+      bounce 2s ease infinite; /* انیمیشن کوچک اضافی */
+  transform-origin: center;
+}
+
+@keyframes zoomIn {
+  from {
+      transform: scale(0.5);
+      opacity: 0;
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-15px);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(0.98);
+  }
+}
+.alert-orange{
+  background-color: #ff8f20 !important;
+  color: white;
+}

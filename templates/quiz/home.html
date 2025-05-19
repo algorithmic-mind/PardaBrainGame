@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">به پردا گیم خوش آمدید!</h1>
+    <p class="lead">سیستم آزمون آنلاین با تصاویر</p>
+    <hr class="my-4">
+    <p>برای شرکت در آزمون‌ها، ابتدا وارد حساب کاربری خود شوید.</p>
+    {% if not user.is_authenticated %}
+    <a class="btn btn-primary btn-lg" href="{% url 'accounts:login' %}">ورود به سیستم</a>
+    <a class="btn btn-outline-primary btn-lg" href="{% url 'accounts:register' %}">ثبت نام</a>
+    {% else %}
+    <a class="btn btn-primary btn-lg" href="{% url 'quiz:quiz_list' %}">مشاهده آزمون‌ها</a>
+    {% endif %}
+</div>
+
+{% if latest_quizzes %}
+<div class="mt-5">
+    <h2>آخرین آزمون‌ها</h2>
+    <div class="row mt-4">
+        {% for quiz in latest_quizzes %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quiz.title }}</h5>
+                    <p class="card-text">{{ quiz.description|truncatewords:20 }}</p>
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="{% url 'quiz:quiz_detail' quiz.id %}" class="btn btn-primary">مشاهده جزئیات</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

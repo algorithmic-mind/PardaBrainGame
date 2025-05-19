@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">لیست آزمون‌ها</h1>
+
+{% if quizzes %}
+<div class="row">
+    {% for quiz in quizzes %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ quiz.title }}</h5>
+                <p class="card-text">{{ quiz.description|truncatewords:20 }}</p>
+                <p class="card-text"><small class="text-muted">تعداد سوالات: {{ quiz.questions.count }}</small></p>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{% url 'quiz:quiz_detail' quiz.id %}" class="btn btn-primary">مشاهده جزئیات</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    در حال حاضر هیچ آزمونی موجود نیست.
+</div>
+{% endif %}
+{% endblock %}

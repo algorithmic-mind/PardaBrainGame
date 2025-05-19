@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load quiz_filters %}
+
+{% block content %}
+<div class="card mb-5">
+    <div class="card-header bg-orange text-white">
+        <h5 class="card-title mb-0">{{ quiz.title }}</h5>
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{ quiz.description }}</p>
+        <p><strong>تعداد سوالات:</strong> {{ quiz.questions.count }}</p>
+        <p><strong>امکان شرکت مجدد:</strong> {% if quiz.allow_retake %}بله{% else %}خیر{% endif %}</p>
+        
+
+        {% if can_retake %}
+            <div class="mt-4">
+                <a href="{% url 'quiz:start_quiz' quiz.id %}" class="btn btn-3d-orange">شروع آزمون</a>
+            </div>
+        {% elif not quiz.allow_retake and user_completed %}
+            <div class="alert alert-warning mt-4">
+                شما قبلاً در این آزمون شرکت کرده‌اید و امکان شرکت مجدد وجود ندارد.
+            </div>
+        {% else %}
+            <div class="mt-4 mb-4">
+                <a href="{% url 'quiz:start_quiz' quiz.id %}" class="btn btn-3d-orange">شروع آزمون</a>
+            </div>
+        {% endif %}
+
+<br>
+        {% if user_attempts %}
+            <h6 class="mt-4">تلاش‌های قبلی شما:</h6>
+            <ul class="list-group">
+                {% for attempt in user_attempts %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    تلاش {{ forloop.counter }} - {{ attempt.start_time|jalali_date:"%Y/%m/%d ساعت %H:%M" }}
+                    <span class=" ">امتیاز: {{ attempt.score }}</span>
+                    <a href="{% url 'quiz:quiz_results' attempt.id %}" class="btn btn-sm btn-3d-orange">مشاهده نتایج</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        
+    </div>
+</div>
+
+<!-- بخش نفرات برتر -->
+<div class="card mb-5">
+    <div class="card-header bg-orange text-white">
+        <h5 class="card-title mb-0">۱۰ نفر برتر این آزمون</h5>
+    </div>
+    <div class="card-body">
+        {% if top_attempts %}
+            <div class="table-responsive">
+                <table class="table bg-orange table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">رتبه</th>
+                            <th scope="col">نام کاربر</th>
+                            <th scope="col">امتیاز</th>
+                            <th scope="col">درصد</th>
+                            <th scope="col">زمان</th>
+                            <th scope="col">تاریخ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attempt in top_attempts %}
+                        <tr {% if attempt.user == request.user %}class="table-warning bg-orange"{% endif %}>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ attempt.user.get_full_name|default:attempt.user.username }}</td>
+                            <td>{{ attempt.score }}</td>
+                            <td>{{ attempt.percentage|floatformat:1 }}%</td>
+                            <td>{{ attempt.duration_formatted }}</td>
+                            <td>{{ attempt.end_time|date:"Y/m/d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                هنوز هیچ کاربری در این آزمون شرکت نکرده است.
+            </div>
+        {% endif %}
+    </div>
+</div>
+<br>
+<br>
+{% endblock %}

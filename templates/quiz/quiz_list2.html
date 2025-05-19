@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load quiz_filters %}
+
+{% block content %}
+<h3 class="mb-4">آزمون ها و بازی ها</h3>
+
+<div class="alert alert-orange"><b>{{request.user.first_name}}</b> عزیز 🥰
+<br>
+لیست بازی ها یا تست در قسمت پایین آمده است 👇
+</div>
+
+{% if quizzes %}
+<div class="row">
+    {% for quiz in quizzes %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 " style="border-top-right-radius: 20px;border-top-left-radius: 20px;">
+            <div class="card-body" >
+                <h5 class="card-title">{{ quiz.title }}</h5>
+                <small>تاریخ ساخت: {{quiz.created_at|jalali_date}}</small>
+                <br>
+                <small class="card-text">{{ quiz.description|truncatewords:20 }}</small>
+                
+                <p class="card-text">
+                    <small class="text-muted">تعداد سوالات: {{ quiz.questions.count }}</small>
+                    <br>
+                    <small class="text-muted">امکان شرکت مجدد: {% if quiz.allow_retake %}<span class="text-success">دارد</span>{% else %}<span class="text-danger">ندارد</span>{% endif %}</small>
+                </p>
+            </div>
+            <div class="card-footer text-center bg-white ">
+                <a href="{% url 'quiz:quiz_detail' quiz.id %}" class="btn btn-3d-orange">مشاهده جزئیات و شرکت کردن</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    در حال حاضر هیچ آزمونی موجود نیست.
+</div>
+{% endif %}
+{% endblock %}
+

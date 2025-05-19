@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load quiz_filters %}
+
+{% block content %}
+
+
+<h3 class="mb-4">داشبورد</h3>
+
+<div class="alert alert-orange">خوش آمدید <b>{{request.user.first_name}}</b> عزیز 🥰
+
+</div>
+
+<div class="row mb-5 mt-4">
+    <div class="col-md-4">
+        <div class="card text-center rounded-4">
+            <div class="card-body">
+                <h5 class="card-title">تعداد آزمون‌های انجام شده</h5>
+                <p class="card-text display-4">{{ total_quizzes_taken }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center rounded-4">
+            <div class="card-body">
+                <h5 class="card-title">مجموع امتیازات</h5>
+                <p class="card-text display-4">{{ total_score }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center rounded-4">
+            <div class="card-body">
+                <h5 class="card-title">عملیات</h5>
+                <a href="{% url 'quiz:quiz_list' %}" class="btn btn-3d-orange">مشاهده آزمون‌ها</a>
+                <a href="#" class="btn btn-3d-danger ">خروج از سیستم</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mb-4">تاریخچه آزمون‌ها</h2>
+
+{% if user_attempts %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>عنوان آزمون</th>
+                <th>تاریخ شروع</th>
+                <th>وضعیت</th>
+                <th>امتیاز</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in user_attempts %}
+            <tr>
+                <td>{{ attempt.quiz.title }}</td>
+                <td>{{ attempt.start_time|jalali_date:"%Y/%m/%d ساعت %H:%M"  }}</td>
+                <td>
+                    {% if attempt.completed %}
+                    <span class="badge bg-success">تکمیل شده</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">ناتمام</span>
+                    {% endif %}
+                </td>
+                <td>{{ attempt.score }}</td>
+                <td>
+                    {% if attempt.completed %}
+                    <a href="{% url 'quiz:quiz_results' attempt.id %}" class="btn btn-sm btn-3d-orange">مشاهده نتایج</a>
+                    {% else %}
+                    <a href="{% url 'quiz:quiz_attempt' attempt.id %}" class="btn btn-sm btn-3d-warning">ادامه آزمون</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    شما هنوز در هیچ آزمونی شرکت نکرده‌اید.
+</div>
+{% endif %}
+{% endblock %}
