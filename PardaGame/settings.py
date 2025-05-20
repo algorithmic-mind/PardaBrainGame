@@ -86,9 +86,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = 'fa-ir'
 TIME_ZONE = 'Asia/Tehran'
-USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -106,4 +104,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'quiz:dashboard'
 LOGOUT_REDIRECT_URL = 'accounts:login'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 3600  # یک ساعت (برحسب ثانیه)
+SESSION_SAVE_EVERY_REQUEST = True
 

@@ -6,6 +6,7 @@ idna==3.10
 jalali_core==1.0.0
 jdatetime==5.2.0
 pillow==11.2.1
+pytz==2025.2
 requests==2.32.3
 smsir-python==1.0.8
 sqlparse==0.5.3

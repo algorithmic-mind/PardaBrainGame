@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <div class="row mb-4">
-            <div class="col-md-3">
+            <div class="col-md-3 mb-4">
                 <div class="card text-center rounded-4">
                     <div class="card-body">
                         <h5 class="card-title">امتیاز</h5>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-4">
                 <div class="card text-center rounded-4">
                     <div class="card-body">
                         <h5 class="card-title">درصد</h5>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-4">
                 <div class="card text-center rounded-4">
                     <div class="card-body">
                         <h5 class="card-title">پاسخ‌های صحیح</h5>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-4">
                 <div class="card text-center rounded-4">
                     <div class="card-body">
                         <h5 class="card-title">زمان</h5>
@@ -49,7 +49,7 @@
             {% for answer in attempt.answers.all %}
             <div class="accordion-item">
                 <h2 class="accordion-header " id="heading{{ answer.id }}">
-                    <button class="accordion-button bg-orange text-white {% if not answer.selected_choice.is_correct %}text-danger{% else %}text-success{% endif %} {% if forloop.counter != 1 %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ answer.id }}" aria-expanded="{% if forloop.counter == 1 %}true{% else %}false{% endif %}" aria-controls="collapse{{ answer.id }}">
+                    <button class="accordion-button bg-orange text-white {% if not answer.selected_choice.is_correct %}text-danger{% else %}text-success{% endif %} " type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ answer.id }}" aria-expanded="false" aria-controls="collapse{{ answer.id }}">
                         سوال {{ forloop.counter }}: {{ answer.question.question_text }}
                         {% if answer.selected_choice.is_correct %}
                         <span class="badge bg-success ms-2">صحیح</span>
@@ -58,7 +58,7 @@
                         {% endif %}
                     </button>
                 </h2>
-                <div id="collapse{{ answer.id }}" class="accordion-collapse collapse {% if forloop.counter == 1 %}show{% endif %}" aria-labelledby="heading{{ answer.id }}" data-bs-parent="#answersAccordion">
+                <div id="collapse{{ answer.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ answer.id }}" data-bs-parent="#answersAccordion">
                     <div class="accordion-body">
                         <div class="row">
                             {% for choice in answer.question.choice_set.all %}
